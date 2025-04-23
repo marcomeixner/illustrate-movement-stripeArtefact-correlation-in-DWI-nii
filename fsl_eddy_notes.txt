@@ -1,0 +1,196 @@
+install fsl:
+------------
+
+Installation:
+
+https://andysbrainbook.readthedocs.io/en/latest/installation/fsl_mac_install.html
+->
+https://fsl.fmrib.ox.ac.uk/fsl/docs/#/install/linux
+->
+download fslinstaller.py
+
+run fslinstaller.py in the command line:
+sudo python /mnt/c/Users/marco/Download/fslinstaller.py
+	Installation path: /opt/FSL
+
+
+
+ADD PATH
+-----------
+echo $SHELL -> /usr/bin/zsh
+nano ~/.zsh
+add to the end of the file:
+	# Set FSLDIR path (adjust if necessary)
+	export FSLDIR=/opt/FSL
+	# Add FSL to the PATH
+	export PATH=$FSLDIR/bin:$PATH
+	# Set the default output format for FSL (optional)
+	export FSLOUTPUTTYPE=NIFTI_GZ
+
+
+
+
+
+fsl eddy
+----------
+ 
+- eddy is single thread
+- eddy_openmp is multithread
+
+
+1) make a mask:
+bet /mnt/d/IFL_data/EOMES_data/allDWInii/dwi_dwi_multishell_AP_20231106163530_14.nii /mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/acq_par/EOMES/mask.nii -m
+
+2) run eddy:
+
+somehow this is currently not writing anything - dunno why - run it via python now
+
+eddy --verbose	--imain=/mnt/d/IFL_data/EOMES_data/allDWInii/dwi_dwi_multishell_AP_20231106163530_14.nii \
+		--mask=/mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/acq_par/EOMES/mask.nii.gz \
+        	--index=/mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/acq_par/EOMES/index.txt \
+            	--bvecs=/mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/acq_par/EOMES/bvec.bvec \
+	        --bvals=/mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/acq_par/EOMES/bval.bval \
+            	--acqp=/mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/acq_par/EOMES/acqparams.txt \
+        	--out=/mnt/c/Users/marco/sciebo/code/DWI_sagittal_artefact/eddy_EOMES_test
+
+
+
+
+check nii via fsleyes
+
+
+
+or in python:
+
+import subprocess
+
+command = [
+    "eddy",
+    "--imain=/path/_dwi_105_AP_MB_20250115164634_6.nii",
+    "--mask=mask.nii",
+    "--index=index.txt",
+    "--acqp=acqparams.txt",
+    "--bvecs=bvecs",
+    "--bvals=bvals",
+    "--out=eddy_corrected"
+]
+
+subprocess.run(command, check=True)
+
+
+
+
+3) Output:
+
+Columns 1-3: Translational motion in the x, y, and z directions (dx, dy, dz).
+Columns 4-6: Rotational motion around the x, y, and z axes (rx, ry, rz).
+Columns 7 to 16: Higher-order motion correction parameters or other motion-related terms (could include smoothed, adjusted, or derivative motion estimates).
+
+eddy_corrected.eddy_parameters:
+0  0  0  0  -0  0  0  0  0  0  0  0  0  0  0  0  
+-0.06642155923  -0.6548943921  -0.07149896218  -0.005098172929  0.0008660916938  0.0008060609689  0  0  0  0  0  0  0  0  0  0  
+-0.0649327556  -0.04433462624  -0.0692615277  -0.003644956043  0.001186818001  0.0004005767696  -0.01183378348  0.01490410002  -0.02411784366  -0.0005270634854  -0.000171342479  -0.0006530366571  -0.0002475967952  0.0008990565678  -1.994198159e-05  0  
+-0.01385097195  -0.5645633159  0.00108271015  -0.003059973009  -0.001323067117  0.0006113077397  -0.01858972334  -0.04879288457  -0.0377759384  0.000589029192  0.0006584684383  -0.001468905907  -0.0002267508944  -0.000393505008  -7.309034856e-05  0  
+0.01426035454  -0.1301494831  0.0843251187  -0.001438607578  -0.0009209834388  0.0001710230863  0.0009862801899  0.00928686696  -0.00470334814  -0.0002312195118  -0.0004189286481  -0.0002896684034  0.0003954344729  -0.0003647199256  -0.0001641059935  0  
+0.04445727547  0.1264712198  0.07126411687  -0.0003169664415  -0.0009829020128  0.001268750755  -0.0146883817  -0.04417250273  -0.04561609555  -0.0003885281716  -0.0006727735161  -0.002339005193  -0.0007711722855  -0.0001095567102  0.0001397898174  0 
+
+
+
+
+
+
+
+
+Alternatives:
+--------------
+
+
+
+3. Dipy – If You Want a Python-Based Solution
+
+The Dipy library in Python offers motion correction using 3D rigid-body transformations while accounting for b-value contrast differences.
+
+from dipy.align.imaffine import AffineRegistration
+from dipy.align.transforms import TranslationTransform3D
+
+# Load DWI data and perform motion correction
+
+
+
+
+
+
+
+4. ANTs – A Non-Standard Approach
+
+If you want to use ANTs for DWI motion correction, you must:
+
+    Separate b0 images from diffusion-weighted volumes.
+    Register each volume to the average b0 using rigid-body transformation.
+    Reapply corrected transforms to all volumes while preserving b-vectors.
+
+Would you like help running eddy or setting up an ANTs-based approach?
+Du:
+which of these options will produce a matrix of the movements between volumes besides FSLs mcflirt?
+ChatGPT:
+
+To obtain a matrix of the movements (transformations) between volumes in DWI data, besides FSL's MCFLIRT, the following options will provide you with that information:
+1. FSL's eddy
+
+FSL’s eddy not only performs motion and eddy current correction but also outputs the motion parameters, typically as a set of transformations that describe the movement between volumes. These motion parameters can be found in the output as a text file.
+
+    Output:
+
+        eddy generates a motion parameters file (.movpar), which contains the translation and rotation parameters (in mm and radians) for each volume. These are the "movement matrices" you are looking for.
+
+        You can specify the output motion parameters as:
+
+        eddy_openmp --imain=dwi.nii --mask=mask.nii --index=index.txt --acqp=acqparams.txt --bvecs=bvecs --bvals=bvals --out=eddy_corrected --movpar=movement_parameters.txt
+
+        The movement_parameters.txt will contain the rigid-body transformations (translation and rotation) for each volume relative to the reference volume.
+
+2. ANTs for DWI Motion Correction
+
+If you use ANTs for motion correction (e.g., using a rigid-body registration strategy to align each DWI volume to a reference b0), it can output transformation matrices.
+
+    Output:
+        ANTs generates a set of transformation files (typically in .mat or .txt format), which represent the motion corrections applied to each volume.
+        You can use these files to track the movement of each volume.
+
+    For example, running the following ANTs command would produce a transformation matrix between each volume and the reference:
+
+    antsRegistrationSyN.sh -d 3 -f reference_b0.nii -m dwi_volume_1.nii -o output_prefix
+
+        The output will include a transformation matrix file (typically .mat), which you can then use to calculate the movement between each volume.
+
+3. Dipy (Python-based Solution)
+
+In Dipy, you can use rigid-body registration to obtain the transformation parameters for the motion correction, and you can directly extract the motion parameters (translation and rotation) as matrices.
+
+    Output:
+        Dipy provides the option to extract the transformation matrix after performing registration between each DWI volume and the reference (usually a b0).
+        Using AffineRegistration and TranslationTransform3D, you can directly extract the matrix:
+
+        from dipy.align.imaffine import AffineRegistration
+        from dipy.align.transforms import TranslationTransform3D
+
+        # Assuming you have your volumes loaded as 'moving' and 'fixed' (e.g., b0 reference)
+        registration = AffineRegistration()
+        transform = TranslationTransform3D()
+        params = registration.optimize(fixed, moving, transform)
+
+        # The params object contains the transformation matrix
+        movement_matrix = params.affine
+
+    This gives you the transformation matrix for each volume’s movement relative to the reference.
+
+4. TOPUP + Eddy (FSL)
+
+If you use TOPUP along with eddy, eddy will still provide the motion parameters in a .movpar file, as it does when used alone. TOPUP corrects for susceptibility distortions and is typically used for phase-encoded distortion correction, but the motion parameters are still derived by eddy.
+Summary:
+
+    FSL’s eddy will output motion parameters in a .movpar file, giving you translation and rotation between volumes.
+    ANTs also provides transformation matrices between volumes if you use its registration functions.
+    Dipy can extract motion matrices from rigid-body transformations.
+
+Let me know if you'd like more details on how to extract or interpret these motion matrices!

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>github_proj</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                background-color: black;  /* Set the background to black */
+                color: white;             /* Set the text color to white */
+            }
+            .gallery {
+                display: flex;
+                flex-direction: column;  /* Ensure content stays vertical */
+                align-items: center;
+                gap: 20px;
+            }
+            .gif-gallery {
+                display: flex;
+                justify-content: center; /* Center the GIFs horizontally */
+                gap: 20px;               /* Space between GIFs */
+            }
+            .image-container {
+                position: relative;
+                display: block;
+                margin-bottom: 20px;
+            }
+            img {
+                max-width: 250px;    /* Adjust the size of GIFs */
+                height: auto;        /* Maintain aspect ratio */
+                display: block;
+            }
+            .text-overlay {
+                position: absolute;
+                background: rgba(0, 0, 0, 0.6);
+                color: white;
+                padding: 5px;
+                border-radius: 5px;
+            }
+            .image-label {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+        <script>
+            function checkPassword() {
+                var password = prompt('Please enter the password:');
+                if (password === 'prisma') {
+                    document.getElementById('protected-content').classList.remove('hidden');
+                } else {
+                    alert('Incorrect password.');
+                    document.body.innerHTML = 'Access denied.';
+                }
+            }
+            window.onload = checkPassword;
+        </script>
+    </head>
+    <body>
+        <h1>github_proj</h1>
+        <div id="protected-content" class="hidden">
+            <div class='gallery'>
+                <p style='font-size: 20px;'><strong>In total 2 datasets were checked for a stripe pattern. For a threshold of 1.75 (std_factor) stripes were found in 2 datasets.</strong></p>            
+                <p style='font-size: 20px;'>std_factor: 1.75</p>
+                <p style='font-size: 20px;'>unique b-values: 0, 1000, 1800, 2500</p>
+                <p style='font-size: 20px;'>total_vols_num: 234</p>
+                <p style='font-size: 20px;'>num_outlier: 15</p>
+                <p style='font-size: 20px;'>outlier_Pcnt: 6.41%</p>
+                <p style='font-size: 20px;'>avg correlation: -0.051044847195040634</p>
+                <p style='font-size: 20px;'><strong>datasets with outliers detected:</strong><br><br>dwi_117_AP_MaMe_20250113090131_32<br>dwi_117_AP_noMB_MaMe_20250113090131_33</p>
+                <p style='font-size: 35px;'><strong>File: dwi_117_AP_MaMe_20250113090131_32_imshow.nii</strong></p><div class='gif-gallery'>
+            <div class='image-container'>
+                <span class="image-label"><strong>all Volumes</strong></span>
+                <img src='bval_gifs/dwi_117_AP_MaMe_20250113090131_32_allVols.gif' alt='GIF Image' width="250">
+                
+            </div>
+            
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 0</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_MaMe_20250113090131_32_bval0.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 1000</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_MaMe_20250113090131_32_bval1000.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 1800</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_MaMe_20250113090131_32_bval1800.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 2500</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_MaMe_20250113090131_32_bval2500.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                </div>
+        <div class='image-container'>
+            <img src='dwi_117_AP_MaMe_20250113090131_32_imshow.png' alt='dwi_117_AP_MaMe_20250113090131_32_imshow.png' style="max-width: 1200px; height: auto;">
+            
+        </div>
+        
+        <div class='image-container'>
+            <img src='dwi_117_AP_MaMe_20250113090131_32_plot.png' alt='dwi_117_AP_MaMe_20250113090131_32_plot.png' style="max-width: 1200px; height: auto;">
+            
+        </div>
+        <p style='font-size: 35px;'><strong>File: dwi_117_AP_noMB_MaMe_20250113090131_33_imshow.nii</strong></p><div class='gif-gallery'>
+            <div class='image-container'>
+                <span class="image-label"><strong>all Volumes</strong></span>
+                <img src='bval_gifs/dwi_117_AP_noMB_MaMe_20250113090131_33_allVols.gif' alt='GIF Image' width="250">
+                
+            </div>
+            
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 0</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_noMB_MaMe_20250113090131_33_bval0.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 1000</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_noMB_MaMe_20250113090131_33_bval1000.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 1800</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_noMB_MaMe_20250113090131_33_bval1800.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                
+                <div class='image-container'>
+                    <span class="image-label"><strong>bval: 2500</strong></span>
+                    <img src='bval_gifs/dwi_117_AP_noMB_MaMe_20250113090131_33_bval2500.gif' alt='GIF Image' width="250">
+                    
+                </div>
+                </div>
+        <div class='image-container'>
+            <img src='dwi_117_AP_noMB_MaMe_20250113090131_33_imshow.png' alt='dwi_117_AP_noMB_MaMe_20250113090131_33_imshow.png' style="max-width: 1200px; height: auto;">
+            
+        </div>
+        
+        <div class='image-container'>
+            <img src='dwi_117_AP_noMB_MaMe_20250113090131_33_plot.png' alt='dwi_117_AP_noMB_MaMe_20250113090131_33_plot.png' style="max-width: 1200px; height: auto;">
+            
+        </div>
+        
+            </div>
+        </div>
+    </body>
+    </html>
+    
